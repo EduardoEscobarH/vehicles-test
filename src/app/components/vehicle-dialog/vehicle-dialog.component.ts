@@ -1,11 +1,11 @@
-import { Component, Inject } from '@angular/core';
-import { VehicleInterface } from '../../interfaces/vehicles.interface';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';  // Asegúrate de importar MatSelectModule
 import { CommonModule } from '@angular/common';
+import { Component, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select'; // Asegúrate de importar MatSelectModule
+import { VehicleInterface } from '../../interfaces/vehicles.interface';
 
 @Component({
   selector: 'app-vehicle-dialog',
@@ -15,11 +15,6 @@ import { FormsModule } from '@angular/forms'; // Importa FormsModule
   styleUrls: ['./vehicle-dialog.component.css'],
 })
 export class VehicleDialogComponent {
-
-  states = [
-    { name: 'ACTIVO' },
-    { name: 'INACTIVO' },
-  ];
 
   constructor(
     public dialogRef: MatDialogRef<VehicleDialogComponent>,

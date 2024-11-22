@@ -19,7 +19,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Estatus</mat-label>
       <mat-select [(ngModel)]="data.status.name" name="status" required>
-        <mat-option *ngFor="let state of states" [value]="state.name">
+        <mat-option *ngFor="let state of data.status" [value]="data.status.id">
           {{ state.name }}
         </mat-option>
       </mat-select>
