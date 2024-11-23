@@ -1,22 +1,22 @@
 <div class="container-lg">
-  <h2 mat-dialog-title class="text-center mt-3 mb-2">{{ data.id ? 'Editar Vehículo' : 'Agregar Vehículo' }}</h2>
+  <h2 mat-dialog-title class="text-center mt-3 mb-4">{{ data.id ? 'Editar Vehículo' : 'Agregar Vehículo' }}</h2>
   <form (ngSubmit)="dialogRef.close(data)" class="dialog-form">
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline" class="w-100">
       <mat-label>VIN</mat-label>
       <input matInput [(ngModel)]="data.vin" name="vin" required />
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline" class="w-100">
       <mat-label>Placa</mat-label>
       <input matInput [(ngModel)]="data.licensePlate" name="licensePlate" required />
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline" class="w-100">
       <mat-label>Modelo</mat-label>
       <input matInput [(ngModel)]="data.model" name="model" required />
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline" class="w-100">
       <mat-label>Estatus</mat-label>
       <mat-select [(ngModel)]="data.status" name="status" required>
         <mat-option *ngFor="let state of states" [value]="state">
@@ -26,7 +26,7 @@
     </mat-form-field>
 
     <div mat-dialog-actions align="end" class="text-center">
-      <button class="btn btn-danger me-2 mb-3" (click)="onCancel()">Cancelar</button>
+      <button type="button" class="btn btn-danger me-2 mb-3" (click)="onCancel()">Cancelar</button>
       <button class="btn btn-success mb-3" color="primary" type="submit">Guardar</button>
     </div>
   </form>

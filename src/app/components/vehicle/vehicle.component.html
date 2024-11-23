@@ -1,8 +1,8 @@
 <div style="padding: 50px;">
-  <h1 class="text-center">Control Vehicular</h1>
+  <h1 class="text-center">Control Vehicular<i class="bi bi-car-front-fill ms-2"></i></h1>
   <div class="d-flex justify-content-end mt-3">
-    <button type="button" class="btn my-green-button" (click)="openDialog()">
-      <i class="bi bi-plus-lg"></i>Agregar Vehículo
+    <button type="button" class="btn my-green-button" (click)="openDialog()"><i class="bi bi-plus-lg"></i>
+      Agregar Vehículo
     </button>
   </div>
   <div>
@@ -25,11 +25,35 @@
           <td>{{ vehicle.model }}</td>
           <td>{{ vehicle.status.name }}</td>
           <td>
-            <button class="btn btn-warning me-2" (click)="openDialog(vehicle)">Editar</button>
-            <button class="btn btn-danger" (click)="deleteVehicle(vehicle.id)">Eliminar</button>
+            <button class="btn btn-warning me-2" (click)="openDialog(vehicle)"><i class="bi bi-pencil me-2"></i>Editar</button>
+            <button class="btn btn-danger" (click)="openDeleteModal(vehicle.id)"><i class="bi bi-trash me-2"></i>Eliminar</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <div *ngIf="alertMessage" class="alert alert-dismissible fade show" [ngClass]="alertClass" role="alert">
+    <i class="bi" [ngClass]="alertIcon"></i> {{ alertMessage }}
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeAlert()"></button>
+  </div>
+
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Confirmar Eliminación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ¿Estás seguro de que deseas eliminar este vehículo? Esta acción no se puede deshacer.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" (click)="confirmDelete()">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

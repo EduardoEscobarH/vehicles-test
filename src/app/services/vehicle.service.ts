@@ -9,24 +9,23 @@
   export class VehicleService {
     API_URL: string="https://profound-warmth-production-5b71.up.railway.app/api/vehicles";
 
-    constructor( private httpClient: HttpClient) {
+    constructor( private http: HttpClient) {
     }
 
     getVehicle(): Observable<any> {
-      return this.httpClient.get(this.API_URL).pipe(res=>res);
+      return this.http.get(this.API_URL).pipe(res=>res);
     }
 
     addVehicle(vehicle: any): Observable<any> {
-      return this.httpClient.post<any>(this.API_URL, vehicle);
+      return this.http.post<any>(this.API_URL, vehicle);
     }
 
     updateVehicle(id: number, vehicle: VehicleInterface): Observable<VehicleInterface> {
-      console.log("final:"  +vehicle.status.name)
-      return this.httpClient.put<VehicleInterface>(`${this.API_URL}/${id}`, vehicle);
+      return this.http.put<VehicleInterface>(`${this.API_URL}/${id}`, vehicle);
     }
 
     deleteVehicle(id: number): Observable<void> {
-      return this.httpClient.delete<void>(`${this.API_URL}/${id}`);
+      return this.http.delete<void>(`${this.API_URL}/${id}`);
     }
 
   }

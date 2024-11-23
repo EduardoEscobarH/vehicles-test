@@ -3,19 +3,20 @@ import { VehicleInterface } from '../../interfaces/vehicles.interface';
 import { VehicleService } from '../../services/vehicle.service';
 import { VehicleDialogComponent } from '../vehicle-dialog/vehicle-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common'; // Importación correcta
-import { MatButtonModule } from '@angular/material/button'; // Para usar botones Material
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-vehicle',
   standalone: true,
-  imports: [CommonModule, MatButtonModule], // Asegúrate de incluirlo aquí
+  imports: [CommonModule, MatButtonModule],
   templateUrl: './vehicle.component.html',
-  styleUrls: ['./vehicle.component.css'] // Notar que es `styleUrls` (plural)
+  styleUrls: ['./vehicle.component.css'],
 })
 export class VehicleComponent implements OnInit {
-
   vehiclesList: VehicleInterface[] = [];
+  vehicleToDelete: number | null = null;  // Variable para almacenar el id del vehículo a eliminar
+
   constructor(
     private vehicleService: VehicleService,
     public dialog: MatDialog
@@ -32,18 +33,22 @@ export class VehicleComponent implements OnInit {
       },
       error: (err) => {
         console.log(err);
-      }
+      },
     });
   }
 
   openDialog(vehicle?: VehicleInterface): void {
     const dialogRef = this.dialog.open(VehicleDialogComponent, {
       width: '400px',
-      data: vehicle || { vin: '', licensePlate: '', model: '', status: { id: null, name: '' } },
+      data: vehicle || {
+        vin: '',
+        licensePlate: '',
+        model: '',
+        status: { id: null, name: '' },
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result)
       if (result) {
         if (vehicle) {
           this.updateVehicle(vehicle.id, result);
@@ -54,28 +59,75 @@ export class VehicleComponent implements OnInit {
     });
   }
 
+  openDeleteModal(id: number): void {
+    this.vehicleToDelete = id;  // Guarda el id del vehículo a eliminar
+    const modalElement = document.getElementById('deleteModal');
 
-  deleteVehicle(id: number): void {
-    if (confirm('¿Estás seguro de que deseas eliminar este vehículo?')) {
-      this.vehicleService.deleteVehicle(id).subscribe(() => {
-        alert('Vehículo eliminado con éxito');
-        this.getVehicle();
+    if (modalElement) {
+      const modal = new window.bootstrap.Modal(modalElement);  // Usamos 'new' para crear la instancia del modal
+      modal.show();  // Muestra el modal de Bootstrap
+    }
+  }
+
+
+
+  confirmDelete(): void {
+    if (this.vehicleToDelete !== null) {
+      this.vehicleService.deleteVehicle(this.vehicleToDelete).subscribe({
+        next: () => {
+          this.getVehicle();
+          const modal = new window.bootstrap.Modal(document.getElementById('deleteModal')!);
+          modal.hide();
+        },
+        error: (err) => {
+          console.log(err);
+        },
       });
     }
   }
 
-  private addVehicle(vehicle: VehicleInterface): void {
-    this.vehicleService.addVehicle(vehicle).subscribe(() => {
-      alert('Vehículo agregado con éxito');
-      this.getVehicle();
+  addVehicle(vehicle: VehicleInterface): void {
+    this.vehicleService.addVehicle(vehicle).subscribe({
+      next: () => {
+        this.showAlert('Vehículo agregado con éxito', 'success');
+        this.getVehicle();
+      },
+      error: () => {
+        this.showAlert('Error al agregar el vehículo', 'error');
+      }
     });
   }
 
-  private updateVehicle(id: number, vehicle: VehicleInterface): void {
-    console.log(vehicle);
-    this.vehicleService.updateVehicle(id, vehicle).subscribe(() => {
-      alert('Vehículo actualizado con éxito');
-      this.getVehicle();
+  updateVehicle(id: number, vehicle: VehicleInterface): void {
+    this.vehicleService.updateVehicle(id, vehicle).subscribe({
+      next: () => {
+        this.showAlert('Vehículo actualizado con éxito', 'success');
+        this.getVehicle();
+      },
+      error: () => {
+        this.showAlert('Error al actualizar el vehículo', 'error');
+      }
     });
+  }
+
+  alertMessage: string | null = null;
+  alertClass: string = '';
+  alertIcon: string = '';
+
+  showAlert(message: string, type: 'success' | 'error'): void {
+    this.alertMessage = message;
+    if (type === 'success') {
+      this.alertClass = 'alert-success';
+      this.alertIcon = 'bi-check-circle';
+    } else {
+      this.alertClass = 'alert-danger';
+      this.alertIcon = 'bi-exclamation-triangle';
+    }
+
+    setTimeout(() => this.closeAlert(), 5000);
+  }
+
+  closeAlert(): void {
+    this.alertMessage = null;
   }
 }
