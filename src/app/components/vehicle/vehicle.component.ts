@@ -39,10 +39,11 @@ export class VehicleComponent implements OnInit {
   openDialog(vehicle?: VehicleInterface): void {
     const dialogRef = this.dialog.open(VehicleDialogComponent, {
       width: '400px',
-      data: vehicle || { status: { name: '' } },
+      data: vehicle || { vin: '', licensePlate: '', model: '', status: { id: null, name: '' } },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      console.log(result)
       if (result) {
         if (vehicle) {
           this.updateVehicle(vehicle.id, result);
@@ -52,6 +53,7 @@ export class VehicleComponent implements OnInit {
       }
     });
   }
+
 
   deleteVehicle(id: number): void {
     if (confirm('¿Estás seguro de que deseas eliminar este vehículo?')) {
@@ -70,6 +72,7 @@ export class VehicleComponent implements OnInit {
   }
 
   private updateVehicle(id: number, vehicle: VehicleInterface): void {
+    console.log(vehicle);
     this.vehicleService.updateVehicle(id, vehicle).subscribe(() => {
       alert('Vehículo actualizado con éxito');
       this.getVehicle();
