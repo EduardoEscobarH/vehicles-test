@@ -9,5 +9,4 @@ export interface VehicleInterface{
 export interface status{
     "id": number;
     "name": string;
-
 }

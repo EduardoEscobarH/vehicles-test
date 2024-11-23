@@ -16,6 +16,16 @@ import { VehicleInterface } from '../../interfaces/vehicles.interface';
 })
 export class VehicleDialogComponent {
 
+  states = [
+    {
+      id: 1,
+      name: "ACTIVO",
+    },{
+      id: 2,
+      name: "INACTIVO",
+    }
+  ]
+
   constructor(
     public dialogRef: MatDialogRef<VehicleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: VehicleInterface
