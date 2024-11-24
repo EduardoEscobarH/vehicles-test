@@ -70,14 +70,20 @@ export class VehicleComponent implements OnInit {
   }
 
 
-
   confirmDelete(): void {
     if (this.vehicleToDelete !== null) {
       this.vehicleService.deleteVehicle(this.vehicleToDelete).subscribe({
         next: () => {
           this.getVehicle();
-          const modal = new window.bootstrap.Modal(document.getElementById('deleteModal')!);
-          modal.hide();
+
+          // Cerrar el modal utilizando el atributo de instancia Bootstrap
+          const deleteModalElement = document.getElementById('deleteModal');
+          if (deleteModalElement) {
+            const modal = window.bootstrap.Modal.getInstance(deleteModalElement); // Recuperar la instancia existente
+            if (modal) {
+              modal.hide(); // Cerrar el modal
+            }
+          }
         },
         error: (err) => {
           console.log(err);
@@ -85,6 +91,7 @@ export class VehicleComponent implements OnInit {
       });
     }
   }
+
 
   addVehicle(vehicle: VehicleInterface): void {
     this.vehicleService.addVehicle(vehicle).subscribe({
