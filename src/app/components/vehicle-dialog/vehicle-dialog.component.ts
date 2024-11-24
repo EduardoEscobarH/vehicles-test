@@ -16,6 +16,15 @@ import { VehicleInterface } from '../../interfaces/vehicles.interface';
 })
 export class VehicleDialogComponent {
 
+  ngOnInit(): void {
+    if (this.data?.status?.id) {
+      const matchedState = this.states.find((state) => state.id === this.data.status.id);
+      if (matchedState) {
+        this.data.status = matchedState;
+      }
+    }
+  }
+
   states = [
     {
       id: 1,
